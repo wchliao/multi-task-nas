@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+data/
+saved_models/
+
+run.py
+test.py

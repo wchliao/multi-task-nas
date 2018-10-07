@@ -1,0 +1,7 @@
+agent:
+  num_epochs: 1000
+  batch_size: 8
+
+model:
+  num_epochs: 20
+  batch_size: 128
