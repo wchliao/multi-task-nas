@@ -23,7 +23,6 @@ Arguments:
  * `--load`: Load a pre-trained model before training. 
  * `--path`: Path (directory) that model and history are saved. (default: `'saved_models/default/'`)
  * `--save_model`: A flag used to decide whether to save model or not.
- * `--save_history`: A flag used to decide whether to save training history or not.
  * `--verbose`: A flag used to decide whether to demonstrate verbose messages or not.
 
 ### Evaluate

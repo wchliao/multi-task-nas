@@ -67,7 +67,6 @@ def train(args):
                 test_data=test_data,
                 configs=configs,
                 save_model=args.save_model,
-                save_history=args.save_history,
                 path=args.path,
                 verbose=args.verbose
                 )

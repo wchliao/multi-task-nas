@@ -21,7 +21,8 @@ class SingleRandomSearch(BaseRandomSearch):
         self.architecture_acc = []
 
         self.best_architecture = None
-        self.best_acc = 0.
+        self.best_val_acc = 0.
+        self.best_test_acc = []
 
 
     def train(self,
@@ -34,8 +35,6 @@ class SingleRandomSearch(BaseRandomSearch):
               path='saved_models/default',
               verbose=False
               ):
-
-        test_acc = []
 
         for epoch in range(configs.agent.num_epochs):
             layers = [self.search_space[0]]
@@ -55,30 +54,18 @@ class SingleRandomSearch(BaseRandomSearch):
             self.sampled_architecture.append(layers)
             self.architecture_acc.append(accuracy)
 
-            if accuracy > self.best_acc:
+            if accuracy > self.best_val_acc:
                 self.best_architecture = layers
-                self.best_acc = accuracy
-                test_acc.append(model.eval(test_data))
+                self.best_val_acc = accuracy
+                self.best_test_acc.append(model.eval(test_data))
             else:
-                test_acc.append(test_acc[-1])
+                self.best_test_acc.append(self.best_test_acc[-1])
 
             if verbose:
-                print('[Epoch {}] Accuracy: {}'.format(epoch + 1, test_acc[-1]))
+                print('[Epoch {}] Accuracy: {}'.format(epoch + 1, self.best_test_acc[-1]))
 
             if save_model:
                 self.save(path)
-
-            if save_history:
-                self._save_history(test_acc, path)
-
-
-    def _save_history(self, history, path):
-        if not os.path.isdir(path):
-            os.makedirs(path)
-        filename = os.path.join(path, 'history.json')
-
-        with open(filename, 'w') as f:
-            json.dump(history, f)
 
 
     def eval(self, train_data, test_data, configs):
@@ -102,7 +89,9 @@ class SingleRandomSearch(BaseRandomSearch):
         with open(os.path.join(path, 'architecture_acc.pkl'), 'wb') as f:
             pickle.dump(self.architecture_acc, f)
         with open(os.path.join(path, 'best.pkl'), 'wb') as f:
-            pickle.dump({'architecture': self.best_architecture, 'accuracy': self.best_acc}, f)
+            pickle.dump({'architecture': self.best_architecture, 'accuracy': self.best_val_acc}, f)
+        with open(os.path.join(path, 'history.json'), 'w') as f:
+            json.dump(self.best_test_acc, f)
 
 
     def load(self, path):
@@ -114,4 +103,6 @@ class SingleRandomSearch(BaseRandomSearch):
             with open(os.path.join(path, 'best.pkl'), 'rb') as f:
                 best = pickle.load(f)
                 self.best_architecture = best['architecture']
-                self.best_acc = best['accuracy']
+                self.best_val_acc = best['accuracy']
+            with open(os.path.join(path, 'history'), 'r') as f:
+                self.best_test_acc = json.load(f)
