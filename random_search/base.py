@@ -33,11 +33,15 @@ class BaseRandomSearch:
               ):
 
         for epoch in range(configs.agent.num_epochs):
-            layers = [self.search_space[0]]
 
-            for _ in range(self.num_layers - 1):
-                idx = np.random.randint(self.search_size)
-                layers.append(self.search_space[idx])
+            layers = None
+
+            while layers is None or layers in self.sampled_architecture:
+                layers = [self.search_space[0]]
+
+                for _ in range(self.num_layers - 1):
+                    idx = np.random.randint(self.search_size)
+                    layers.append(self.search_space[idx])
 
             model = self.build_model(layers, self.architecture, self.task_info)
             accuracy = model.train(train_data=train_data,
