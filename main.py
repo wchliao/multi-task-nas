@@ -2,7 +2,7 @@ import argparse
 import yaml
 from collections import namedtuple
 from data_loader import CIFAR100Loader
-from random_search import SingleRandomSearch
+from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
 
 
 def parse_args():
@@ -13,7 +13,9 @@ def parse_args():
     mode.add_argument('--eval', action='store_true')
 
     parser.add_argument('--controller', action='store_true')
-    parser.add_argument('--type', type=int, default=1, help='1: Single task experiment')
+    parser.add_argument('--type', type=int, default=3, help='1: Single task experiment \n'
+                                                            '2: Multi-task experiment without shared component \n'
+                                                            '3: Multi-task experiment with full search space')
     parser.add_argument('--data', type=int, default=1, help='1: CIFAR-100')
     parser.add_argument('--task', type=int, default=None)
     parser.add_argument('--load', action='store_true')
@@ -46,7 +48,8 @@ def train(args):
         TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels'])
         task_info = TaskInfo(image_size=train_data.image_size,
                              num_classes=train_data.num_classes[args.task],
-                             num_channels=train_data.num_channels)
+                             num_channels=train_data.num_channels
+                             )
 
         train_data = train_data.get_loader(args.task)
         valid_data = valid_data.get_loader(args.task)
@@ -55,7 +58,34 @@ def train(args):
         if args.controller:
             raise NotImplementedError
         else:
-            agent = SingleRandomSearch(architecture=architecture, task_info=task_info)
+            agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
+
+    elif args.type == 2:
+        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            raise NotImplementedError
+        else:
+            agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
+
+    elif args.type == 3:
+        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            raise NotImplementedError
+        else:
+            agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
+
     else:
         raise ValueError('Unknown setting: {}'.format(args.setting))
 
@@ -86,14 +116,16 @@ def evaluate(args):
         raise ValueError('Unknown data ID: {}'.format(args.data))
 
     num_tasks = len(train_data.num_classes)
+    TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
 
     if args.type == 1:
         assert args.task in list(range(num_tasks)), 'Unknown task: {}'.format(args.task)
 
-        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels'])
         task_info = TaskInfo(image_size=train_data.image_size,
                              num_classes=train_data.num_classes[args.task],
-                             num_channels=train_data.num_channels)
+                             num_channels=train_data.num_channels,
+                             num_tasks=1
+                             )
 
         train_data = train_data.get_loader(args.task)
         test_data = test_data.get_loader(args.task)
@@ -101,7 +133,32 @@ def evaluate(args):
         if args.controller:
             raise NotImplementedError
         else:
-            agent = SingleRandomSearch(architecture=architecture, task_info=task_info)
+            agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
+
+    elif args.type == 2:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            raise NotImplementedError
+        else:
+            agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
+
+    elif args.type == 3:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            raise NotImplementedError
+        else:
+            agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
+
     else:
         raise ValueError('Unknown setting: {}'.format(args.setting))
 

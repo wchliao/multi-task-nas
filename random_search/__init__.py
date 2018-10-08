@@ -1,1 +1,3 @@
-from .single import SingleRandomSearch
+from .single import SingleTaskRandomSearch
+from .multi_separate import MultiTaskRandomSearchSeparate
+from .multi_full import MultiTaskRandomSearchFull
