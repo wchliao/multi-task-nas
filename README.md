@@ -21,7 +21,7 @@ Arguments:
    * `3`: Train a NAS agent for multi-task model using full search space
  * `--data`: (default: `1`)
    * `1`: CIFAR-100
- * `--task`: Which class to distinguish (for type `1`) (default: None)
+ * `--task`: Task ID (for type `1`) (default: None)
  * `--load`: Load a pre-trained model before training. 
  * `--path`: Path (directory) that model and history are saved. (default: `'saved_models/default/'`)
  * `--save_model`: A flag used to decide whether to save model or not.
@@ -42,5 +42,5 @@ Arguments:
    * `3`: Evaluate a NAS agent for multi-task model using full search space.
  * `--data`: (default: `1`)
    * `1`: CIFAR-100
- * `--task`: Which class to distinguish (for type `1`) (default: None)
+ * `--task`: Task ID (for type `1`) (default: None)
  * `--path`: Path (directory) that model and history are saved. (default: `'saved_models/default/'`)
