@@ -1,36 +1,14 @@
-separate:
-  - type: conv
-    kernel_size: 3
-    share: false
-  - type: conv
-    kernel_size: 1
-    share: false
-  - type: conv
-    kernel_size: 5
-    share: false
-  - type: depthwise-conv
-    kernel_size: 3
-    share: false
-  - type: depthwise-conv
-    kernel_size: 5
-    share: false
-  - type: avg-pool
-    kernel_size: 3
-    share: false
-  - type: max-pool
-    kernel_size: 3
-    share: false
-
-shared:
-  - type: conv
-    kernel_size: 3
-    share: true
-  - type: conv
-    kernel_size: 5
-    share: true
-  - type: depthwise-conv
-    kernel_size: 3
-    share: true
-  - type: depthwise-conv
-    kernel_size: 5
-    share: true
+- type: conv
+  kernel_size: 3
+- type: conv
+  kernel_size: 1
+- type: conv
+  kernel_size: 5
+- type: depthwise-conv
+  kernel_size: 3
+- type: depthwise-conv
+  kernel_size: 5
+- type: avg-pool
+  kernel_size: 3
+- type: max-pool
+  kernel_size: 3
