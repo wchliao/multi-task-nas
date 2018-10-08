@@ -37,9 +37,9 @@ class BaseRandomSearch:
             layers = None
 
             while layers is None or layers in self.sampled_architecture:
-                layers = [self.search_space[0]]
+                layers = []
 
-                for _ in range(self.num_layers - 1):
+                for _ in range(self.num_layers):
                     idx = np.random.randint(self.search_size)
                     layers.append(self.search_space[idx])
 
