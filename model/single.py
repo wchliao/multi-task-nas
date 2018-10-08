@@ -10,7 +10,7 @@ from .base import BaseModel
 class SingleTaskModel(BaseModel):
     def __init__(self, layers, architecture, task_info):
         super(SingleTaskModel, self).__init__(layers, architecture, task_info)
-        self.model = _Model(layers=layers, architecture=architecture, task_info=task_info).to(self.device)
+        self.model = CoreModel(layers=layers, architecture=architecture, task_info=task_info).to(self.device)
 
 
     def train(self, train_data, valid_data, num_epochs=20, save_history=False, path='saved_models/default/', verbose=False):
@@ -86,9 +86,9 @@ class SingleTaskModel(BaseModel):
             self.model.load_state_dict(torch.load(filename))
 
 
-class _InputLayer(nn.Module):
+class InputLayer(nn.Module):
     def __init__(self, layers):
-        super(_InputLayer, self).__init__()
+        super(InputLayer, self).__init__()
 
         self.layers = nn.Sequential(*layers)
 
@@ -99,9 +99,9 @@ class _InputLayer(nn.Module):
         return x
 
 
-class _OutputLayer(nn.Module):
+class OutputLayer(nn.Module):
     def __init__(self, input_size, output_size):
-        super(_OutputLayer, self).__init__()
+        super(OutputLayer, self).__init__()
         self.layers = nn.Sequential(
             nn.Linear(input_size, 512),
             nn.BatchNorm1d(512),
@@ -115,17 +115,17 @@ class _OutputLayer(nn.Module):
         return x
 
 
-class _Model(nn.Module):
+class CoreModel(nn.Module):
     def __init__(self, layers, architecture, task_info):
-        super(_Model, self).__init__()
+        super(CoreModel, self).__init__()
 
         _layers = self._build_layers(layers, architecture, task_info.num_channels)
-        self.initial_layer = _InputLayer(_layers)
+        self.initial_layer = InputLayer(_layers)
 
         image_size = task_info.image_size // np.prod([args.stride for args in architecture])
         out_channels = architecture[-1].num_channels
         input_size = image_size * image_size * out_channels
-        self.output_layer = _OutputLayer(input_size=input_size,
+        self.output_layer = OutputLayer(input_size=input_size,
                                          output_size=task_info.num_classes)
 
 
@@ -204,7 +204,7 @@ class _Model(nn.Module):
                                        )
                     _layers.append(_layer)
             else:
-                raise ValueError('Unknown layer type: {}.'.format(layer.type))
+                raise ValueError('Unknown layer type: {}'.format(layer.type))
 
             _layers.append(nn.BatchNorm2d(out_channels))
             _layers.append(nn.ReLU())
