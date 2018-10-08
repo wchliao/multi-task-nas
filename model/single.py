@@ -72,7 +72,7 @@ class SingleTaskModel(BaseModel):
             return correct / total
 
 
-    def save_model(self, save_path='saved_models/default/'):
+    def save(self, save_path='saved_models/default/'):
         if not os.path.isdir(save_path):
             os.makedirs(save_path)
         filename = os.path.join(save_path, 'model')
@@ -80,7 +80,7 @@ class SingleTaskModel(BaseModel):
         torch.save(self.model.state_dict(), filename)
 
 
-    def load_model(self, save_path='saved_models/default/'):
+    def load(self, save_path='saved_models/default/'):
         if os.path.isdir(save_path):
             filename = os.path.join(save_path, 'model')
             self.model.load_state_dict(torch.load(filename))
