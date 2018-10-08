@@ -22,7 +22,6 @@ def parse_args():
 
     parser.add_argument('--path', type=str, default='saved_models/default/')
     parser.add_argument('--save_model', action='store_true')
-    parser.add_argument('--save_history', action='store_true')
 
     parser.add_argument('--verbose', action='store_true')
 
