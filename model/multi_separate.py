@@ -1,4 +1,3 @@
-import numpy as np
 import torch.nn as nn
 import torch.optim as optim
 from .multi_full import MultiTaskModelFull
@@ -37,4 +36,4 @@ class MultiTaskModelSeparate(MultiTaskModelFull):
         if save_history:
             self._save_history(accuracy, path)
 
-        return np.mean(accuracy[-1])
+        return accuracy[-1]

@@ -45,18 +45,16 @@ class MultiTaskModelFull(BaseModel):
         if save_history:
             self._save_history(accuracy, path)
 
-        return np.mean(accuracy[-1])
+        return accuracy[-1]
 
 
     def _save_history(self, history, path):
         if not os.path.isdir(path):
             os.makedirs(path)
+        filename = os.path.join(path, 'history.json')
 
-        for i, h in enumerate(zip(*history)):
-            filename = os.path.join(path, 'history_class{}.json'.format(i))
-
-            with open(filename, 'w') as f:
-                json.dump(h, f)
+        with open(filename, 'w') as f:
+            json.dump(history, f)
 
 
     def eval(self, data):
@@ -77,7 +75,7 @@ class MultiTaskModelFull(BaseModel):
 
                 model.train()
 
-            return [c / t for c, t in zip(correct, total)]
+            return np.mean([c / t for c, t in zip(correct, total)])
 
 
     def save(self, path='saved_models/default/'):
