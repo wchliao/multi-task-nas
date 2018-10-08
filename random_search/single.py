@@ -86,8 +86,8 @@ class SingleRandomSearch(BaseRandomSearch):
 
         with open(os.path.join(path, 'sampled_architecture.pkl'), 'wb') as f:
             pickle.dump(self.sampled_architecture, f)
-        with open(os.path.join(path, 'architecture_acc.pkl'), 'wb') as f:
-            pickle.dump(self.architecture_acc, f)
+        with open(os.path.join(path, 'architecture_acc.json'), 'w') as f:
+            json.dump(self.architecture_acc, f)
         with open(os.path.join(path, 'best.pkl'), 'wb') as f:
             pickle.dump({'architecture': self.best_architecture, 'accuracy': self.best_val_acc}, f)
         with open(os.path.join(path, 'history.json'), 'w') as f:
@@ -98,11 +98,11 @@ class SingleRandomSearch(BaseRandomSearch):
         if os.path.isdir(path):
             with open(os.path.join(path, 'sampled_architecture.pkl'), 'rb') as f:
                 self.sampled_architecture = pickle.load(f)
-            with open(os.path.join(path, 'architecture_acc.pkl'), 'rb') as f:
-                self.architecture_acc = pickle.load(f)
+            with open(os.path.join(path, 'architecture_acc.json'), 'r') as f:
+                self.architecture_acc = json.load(f)
             with open(os.path.join(path, 'best.pkl'), 'rb') as f:
                 best = pickle.load(f)
                 self.best_architecture = best['architecture']
                 self.best_val_acc = best['accuracy']
-            with open(os.path.join(path, 'history'), 'r') as f:
+            with open(os.path.join(path, 'history.json'), 'r') as f:
                 self.best_test_acc = json.load(f)
