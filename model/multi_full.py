@@ -11,8 +11,9 @@ from .core import MultiTaskCoreModel
 class MultiTaskModelFull(BaseModel):
     def __init__(self, layers, architecture, task_info):
         super(MultiTaskModelFull, self).__init__(layers, architecture, task_info)
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.num_tasks = task_info.num_tasks
-        self.models = [model.to(self.device) for model in MultiTaskCoreModel(layers=layers, architecture=architecture, task_info=task_info)]
+        self.models = [nn.DataParallel(model).to(self.device) for model in MultiTaskCoreModel(layers=layers, architecture=architecture, task_info=task_info)]
 
 
     def train(self, train_data, valid_data, num_epochs=20, save_history=False, path='saved_models/default/', verbose=False):

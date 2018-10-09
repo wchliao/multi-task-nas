@@ -10,7 +10,9 @@ from .core import SingleTaskCoreModel
 class SingleTaskModel(BaseModel):
     def __init__(self, layers, architecture, task_info):
         super(SingleTaskModel, self).__init__(layers, architecture, task_info)
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = SingleTaskCoreModel(layers=layers, architecture=architecture, task_info=task_info).to(self.device)
+        self.model = nn.DataParallel(self.model).to(self.device)
 
 
     def train(self, train_data, valid_data, num_epochs=20, save_history=False, path='saved_models/default/', verbose=False):
