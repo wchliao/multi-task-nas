@@ -23,9 +23,12 @@ class MultiTaskModelFull(BaseModel):
         dataloader = train_data.get_loader()
         criterion = nn.CrossEntropyLoss()
         optimizers = [optim.SGD(model.parameters(), lr=0.1) for model in self.models]
+        schedulers = [optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs) for optimizer in optimizers]
         accuracy = []
 
         for epoch in range(num_epochs):
+            for scheduler in schedulers:
+                scheduler.step()
             for inputs, labels, task in dataloader:
                 model = self.models[task]
                 optimizer = optimizers[task]
