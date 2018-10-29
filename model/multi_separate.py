@@ -8,13 +8,22 @@ class MultiTaskModelSeparate(MultiTaskModelFull):
         super(MultiTaskModelSeparate, self).__init__(layers, architecture, task_info)
 
 
-    def train(self, train_data, valid_data, num_epochs=20, save_history=False, path='saved_models/default/', verbose=False):
+    def train(self,
+              train_data,
+              valid_data,
+              num_epochs=20,
+              learning_rate=0.1,
+              save_history=False,
+              path='saved_models/default/',
+              verbose=False
+              ):
+
         for model in self.models:
             model.train()
 
         dataloaders = [train_data.get_loader(t) for t in range(self.num_tasks)]
         criterion = nn.CrossEntropyLoss()
-        optimizers = [optim.SGD(model.parameters(), lr=0.1) for model in self.models]
+        optimizers = [optim.SGD(model.parameters(), lr=learning_rate) for model in self.models]
         schedulers = [optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs) for optimizer in optimizers]
         accuracy = []
 

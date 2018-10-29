@@ -15,11 +15,20 @@ class SingleTaskModel(BaseModel):
         self.model = nn.DataParallel(self.model).to(self.device)
 
 
-    def train(self, train_data, valid_data, num_epochs=20, save_history=False, path='saved_models/default/', verbose=False):
+    def train(self,
+              train_data,
+              valid_data,
+              num_epochs=20,
+              learning_rate=0.1,
+              save_history=False,
+              path='saved_models/default/',
+              verbose=False
+              ):
+
         self.model.train()
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(self.model.parameters(), lr=0.1)
+        optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
         scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
         accuracy = []
 
