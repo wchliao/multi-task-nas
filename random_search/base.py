@@ -74,6 +74,7 @@ class BaseRandomSearch:
         accuracy = model.train(train_data=train_data,
                                valid_data=test_data,
                                num_epochs=configs.model.num_epochs,
+                               learning_rate=configs.model.learning_rate,
                                save_history=False,
                                verbose=False
                                )
