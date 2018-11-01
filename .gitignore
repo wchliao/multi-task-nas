@@ -2,6 +2,8 @@
 __pycache__/
 data/
 saved_models/
+saved_images/
+plot/
 
 run.py
 test.py
