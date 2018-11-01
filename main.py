@@ -3,6 +3,7 @@ import yaml
 from collections import namedtuple
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
+from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull
 
 
 def parse_args():
@@ -55,7 +56,7 @@ def train(args):
         test_data = test_data.get_loader(args.task)
 
         if args.controller:
-            raise NotImplementedError
+            agent = SingleTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
 
@@ -68,7 +69,7 @@ def train(args):
                              )
 
         if args.controller:
-            raise NotImplementedError
+            agent = MultiTaskControllerSeparate(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
 
@@ -81,7 +82,7 @@ def train(args):
                              )
 
         if args.controller:
-            raise NotImplementedError
+            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
@@ -130,7 +131,7 @@ def evaluate(args):
         test_data = test_data.get_loader(args.task)
 
         if args.controller:
-            raise NotImplementedError
+            agent = SingleTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
 
@@ -142,7 +143,7 @@ def evaluate(args):
                              )
 
         if args.controller:
-            raise NotImplementedError
+            agent = MultiTaskControllerSeparate(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
 
@@ -154,7 +155,7 @@ def evaluate(args):
                              )
 
         if args.controller:
-            raise NotImplementedError
+            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
