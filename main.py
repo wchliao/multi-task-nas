@@ -163,10 +163,13 @@ def evaluate(args):
         raise ValueError('Unknown setting: {}'.format(args.setting))
 
     agent.load(args.path)
-    accuracy = agent.eval(train_data=train_data,
-                          test_data=test_data,
-                          configs=configs
-                          )
+    accuracy, best_architecture = agent.eval(train_data=train_data,
+                                             test_data=test_data,
+                                             configs=configs
+                                             )
+
+    for layer in best_architecture:
+        print(layer)
 
     print('Accuracy: {}'.format(accuracy))
 

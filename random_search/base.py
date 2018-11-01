@@ -79,7 +79,7 @@ class BaseRandomSearch:
                                verbose=False
                                )
 
-        return accuracy
+        return accuracy, self.best_architecture
 
 
     def save(self, path):

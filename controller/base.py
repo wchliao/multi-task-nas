@@ -106,7 +106,7 @@ class BaseController:
                                verbose=False
                                )
 
-        return accuracy
+        return accuracy, layers
 
 
     def save(self, path):
