@@ -41,14 +41,15 @@ def train(args):
         raise ValueError('Unknown data ID: {}'.format(args.data))
 
     num_tasks = len(train_data.num_classes)
+    TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
 
     if args.type == 1:
         assert args.task in list(range(num_tasks)), 'Unknown task: {}'.format(args.task)
 
-        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels'])
         task_info = TaskInfo(image_size=train_data.image_size,
                              num_classes=train_data.num_classes[args.task],
-                             num_channels=train_data.num_channels
+                             num_channels=train_data.num_channels,
+                             num_tasks=1
                              )
 
         train_data = train_data.get_loader(args.task)
@@ -61,7 +62,6 @@ def train(args):
             agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
 
     elif args.type == 2:
-        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
         task_info = TaskInfo(image_size=train_data.image_size,
                              num_classes=train_data.num_classes,
                              num_channels=train_data.num_channels,
@@ -74,7 +74,6 @@ def train(args):
             agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
 
     elif args.type == 3:
-        TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
         task_info = TaskInfo(image_size=train_data.image_size,
                              num_classes=train_data.num_classes,
                              num_channels=train_data.num_channels,
