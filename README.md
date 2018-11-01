@@ -18,7 +18,7 @@ Arguments:
  * `--type`: (default: `3`)
    * `1`: Train a NAS agent for task *i* model.
    * `2`: Train a NAS agent for multi-task model using search space without share.
-   * `3`: Train a NAS agent for multi-task model using full search space
+   * `3`: Train a NAS agent for multi-task model using full search space.
  * `--data`: (default: `1`)
    * `1`: CIFAR-100
  * `--task`: Task ID (for type `1`) (default: None)
@@ -36,7 +36,7 @@ python main.py --eval
 Arguments:
 
  * `--controller`: A flag used to decide whether to evaluate a RL controller or not. If true, evaluate a RL controller. Otherwise, evaluate a best random searched model.
- * `--type`: (default: `1`)
+ * `--type`: (default: `3`)
    * `1`: Evaluate a NAS agent for task *i* model.
    * `2`: Evaluate a NAS agent for multi-task model using search space without share.
    * `3`: Evaluate a NAS agent for multi-task model using full search space.
