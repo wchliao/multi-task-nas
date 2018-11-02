@@ -3,7 +3,7 @@ import yaml
 from collections import namedtuple
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
-from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull
+from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull, MultiTaskController
 
 
 def parse_args():
@@ -16,7 +16,8 @@ def parse_args():
     parser.add_argument('--controller', action='store_true')
     parser.add_argument('--type', type=int, default=3, help='1: Single task experiment \n'
                                                             '2: Multi-task experiment without shared component \n'
-                                                            '3: Multi-task experiment with full search space')
+                                                            '3: Multi-task experiment with full search space \n'
+                                                            '4: Multi-task experiment with \"share\" controller')
     parser.add_argument('--data', type=int, default=1, help='1: CIFAR-100')
     parser.add_argument('--task', type=int, default=None)
     parser.add_argument('--load', action='store_true')
@@ -82,6 +83,18 @@ def train(args):
 
         if args.controller:
             agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
+        else:
+            agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
+
+    elif args.type == 4:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            agent = MultiTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
@@ -155,6 +168,18 @@ def evaluate(args):
 
         if args.controller:
             agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
+        else:
+            agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
+
+    elif args.type == 4:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+        if args.controller:
+            agent = MultiTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 

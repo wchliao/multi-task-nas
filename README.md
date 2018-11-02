@@ -19,6 +19,7 @@ Arguments:
    * `1`: Train a NAS agent for task *i* model.
    * `2`: Train a NAS agent for multi-task model using search space without share.
    * `3`: Train a NAS agent for multi-task model using full search space.
+   * `4`: Train a NAS agent for multi-task model using controller that can control whether a layer is shared or not.
  * `--data`: (default: `1`)
    * `1`: CIFAR-100
  * `--task`: Task ID (for type `1`) (default: None)
@@ -40,6 +41,7 @@ Arguments:
    * `1`: Evaluate a NAS agent for task *i* model.
    * `2`: Evaluate a NAS agent for multi-task model using search space without share.
    * `3`: Evaluate a NAS agent for multi-task model using full search space.
+   * `4`: Train a NAS agent for multi-task model using controller that can control whether a layer is shared or not.
  * `--data`: (default: `1`)
    * `1`: CIFAR-100
  * `--task`: Task ID (for type `1`) (default: None)
