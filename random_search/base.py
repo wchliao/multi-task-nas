@@ -97,14 +97,25 @@ class BaseRandomSearch:
 
 
     def load(self, path):
-        if os.path.isdir(path):
+        try:
             with open(os.path.join(path, 'sampled_architecture.pkl'), 'rb') as f:
                 self.sampled_architecture = pickle.load(f)
             with open(os.path.join(path, 'architecture_acc.json'), 'r') as f:
                 self.architecture_acc = json.load(f)
+
+        except FileNotFoundError:
+            self.sampled_architecture = []
+            self.architecture_acc = []
+
+        try:
             with open(os.path.join(path, 'best.pkl'), 'rb') as f:
                 best = pickle.load(f)
                 self.best_architecture = best['architecture']
                 self.best_val_acc = best['accuracy']
             with open(os.path.join(path, 'history.json'), 'r') as f:
                 self.best_test_acc = json.load(f)
+
+        except FileNotFoundError:
+            self.best_architecture = None
+            self.best_val_acc = 0.
+            self.best_test_acc = []

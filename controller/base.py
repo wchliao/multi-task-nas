@@ -128,19 +128,30 @@ class BaseController:
 
 
     def load(self, path):
-        if os.path.isdir(path):
+        try:
             with open(os.path.join(path, 'sampled_architecture.pkl'), 'rb') as f:
                 self.sampled_architecture = pickle.load(f)
             with open(os.path.join(path, 'architecture_acc_val.json'), 'r') as f:
                 self.architecture_acc_val = json.load(f)
             with open(os.path.join(path, 'architecture_acc_test.json'), 'r') as f:
                 self.architecture_acc_test = json.load(f)
+
+        except FileNotFoundError:
+            self.sampled_architecture = []
+            self.architecture_acc_val = []
+            self.architecture_acc_test = []
+
+        try:
             with open(os.path.join(path, 'history.json'), 'r') as f:
                 self.history = json.load(f)
             with open(os.path.join(path, 'baseline.json'), 'r') as f:
                 self.baseline = json.load(f)
 
             self.controller.load_state_dict(torch.load(os.path.join(path, 'controller')))
+
+        except FileNotFoundError:
+            self.history = []
+            self.baseline = None
 
 
 class _Controller(nn.Module):
