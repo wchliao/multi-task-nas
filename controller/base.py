@@ -28,6 +28,7 @@ class BaseController:
         self.architecture_acc_val = []
         self.architecture_acc_test = []
         self.history = []
+        self.baseline = None
 
 
     def train(self,
@@ -43,7 +44,6 @@ class BaseController:
         self.controller.train()
 
         optimizer = optim.Adam(self.controller.parameters(), lr=configs.agent.learning_rate)
-        baseline = None
 
         for epoch in range(configs.agent.num_epochs):
             layer_IDs, log_probs = self.controller.sample()
@@ -71,12 +71,12 @@ class BaseController:
 
             self.history.append(test_acc)
 
-            if baseline is None:
-                baseline = accuracy
+            if self.baseline is None:
+                self.baseline = accuracy
             else:
-                baseline = configs.agent.baseline_decay * baseline + (1 - configs.agent.baseline_decay) * accuracy
+                self.baseline = configs.agent.baseline_decay * self.baseline + (1 - configs.agent.baseline_decay) * accuracy
 
-            advantage = accuracy - baseline
+            advantage = accuracy - self.baseline
             loss = -log_probs * advantage
             loss = loss.sum()
 
@@ -121,6 +121,8 @@ class BaseController:
             json.dump(self.architecture_acc_test, f)
         with open(os.path.join(path, 'history.json'), 'w') as f:
             json.dump(self.history, f)
+        with open(os.path.join(path, 'baseline.json'), 'w') as f:
+            json.dump(self.baseline, f)
 
         torch.save(self.controller.state_dict(), os.path.join(path, 'controller'))
 
@@ -135,6 +137,8 @@ class BaseController:
                 self.architecture_acc_test = json.load(f)
             with open(os.path.join(path, 'history.json'), 'r') as f:
                 self.history = json.load(f)
+            with open(os.path.join(path, 'baseline.json'), 'r') as f:
+                self.baseline = json.load(f)
 
             self.controller.load_state_dict(torch.load(os.path.join(path, 'controller')))
 
