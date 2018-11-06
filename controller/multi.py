@@ -6,7 +6,7 @@ import os
 import json
 import pickle
 from model import MultiTaskModelFull
-from configs.search_space import search_space_separate, search_space_shared
+from search_space import search_space_separate, search_space_shared
 
 
 class MultiTaskController:

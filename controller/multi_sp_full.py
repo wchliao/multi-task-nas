@@ -1,6 +1,6 @@
 from .base import BaseController
 from model import MultiTaskModelFull
-from configs.search_space import search_space_full
+from search_space import search_space_full
 
 
 class MultiTaskControllerFull(BaseController):

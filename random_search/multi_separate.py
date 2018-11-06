@@ -1,6 +1,6 @@
 from .base import BaseRandomSearch
 from model import MultiTaskModelSeparate
-from configs.search_space import search_space_separate
+from search_space import search_space_separate
 
 
 class MultiTaskRandomSearchSeparate(BaseRandomSearch):

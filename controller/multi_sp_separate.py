@@ -1,6 +1,6 @@
 from .base import BaseController
 from model import MultiTaskModelSeparate
-from configs.search_space import search_space_separate
+from search_space import search_space_separate
 
 
 class MultiTaskControllerSeparate(BaseController):
