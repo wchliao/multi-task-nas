@@ -53,9 +53,9 @@ def train(args):
                              num_tasks=1
                              )
 
-        train_data = train_data.get_loader(args.task)
-        valid_data = valid_data.get_loader(args.task)
-        test_data = test_data.get_loader(args.task)
+        train_data = train_data.get_loader(task=args.task)
+        valid_data = valid_data.get_loader(task=args.task)
+        test_data = test_data.get_loader(task=args.task)
 
         if args.controller:
             agent = SingleTaskController(architecture=architecture, task_info=task_info)
@@ -139,8 +139,8 @@ def evaluate(args):
                              num_tasks=1
                              )
 
-        train_data = train_data.get_loader(args.task)
-        test_data = test_data.get_loader(args.task)
+        train_data = train_data.get_loader(task=args.task)
+        test_data = test_data.get_loader(task=args.task)
 
         if args.controller:
             agent = SingleTaskController(architecture=architecture, task_info=task_info)
