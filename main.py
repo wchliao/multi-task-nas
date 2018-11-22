@@ -113,9 +113,6 @@ def train(args):
                 verbose=args.verbose
                 )
 
-    if args.save_model:
-        agent.save(args.path)
-
 
 def evaluate(args):
     configs = _load_configs()
