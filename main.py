@@ -1,6 +1,6 @@
 import argparse
 import yaml
-from namedtuple import TaskInfo, ControllerConfigs, ModelConfigs, Configs, Layer
+from namedtuple import TaskInfo, AgentConfigs, ModelConfigs, Configs, Layer
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
 from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull, MultiTaskController
@@ -197,7 +197,7 @@ def _load_configs():
     with open('configs/train.yaml', 'r') as f:
         configs = yaml.load(f)
 
-    agent_configs = ControllerConfigs(**configs['agent'])
+    agent_configs = AgentConfigs(**configs['agent'])
     model_configs = ModelConfigs(**configs['model'])
 
     return Configs(agent=agent_configs, model=model_configs)

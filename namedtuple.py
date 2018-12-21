@@ -7,7 +7,7 @@ from collections import namedtuple
 with open('configs/train.yaml', 'r') as f:
     _configs = yaml.load(f)
 
-ControllerConfigs = namedtuple('ControllerConfigs', _configs['agent'].keys())
+AgentConfigs = namedtuple('AgentConfigs', _configs['agent'].keys())
 ModelConfigs = namedtuple('ModelConfigs', _configs['model'].keys())
 Configs = namedtuple('Configs', ['agent', 'model'])
 
