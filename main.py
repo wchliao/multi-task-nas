@@ -3,7 +3,7 @@ import yaml
 from namedtuple import TaskInfo, AgentConfigs, ModelConfigs, Configs, Layer
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
-from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull, MultiTaskController
+from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFullSearchSpace, MultiTaskControllerFull
 
 
 def parse_args():
@@ -81,7 +81,7 @@ def train(args):
                              )
 
         if args.controller:
-            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
+            agent = MultiTaskControllerFullSearchSpace(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
@@ -93,7 +93,7 @@ def train(args):
                              )
 
         if args.controller:
-            agent = MultiTaskController(architecture=architecture, task_info=task_info)
+            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
@@ -162,7 +162,7 @@ def evaluate(args):
                              )
 
         if args.controller:
-            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
+            agent = MultiTaskControllerFullSearchSpace(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
@@ -174,7 +174,7 @@ def evaluate(args):
                              )
 
         if args.controller:
-            agent = MultiTaskController(architecture=architecture, task_info=task_info)
+            agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 

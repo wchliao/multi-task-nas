@@ -9,7 +9,7 @@ from model import MultiTaskModelFull
 from search_space import search_space_separate, search_space_shared
 
 
-class MultiTaskController:
+class MultiTaskControllerFull:
     def __init__(self, architecture, task_info):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
