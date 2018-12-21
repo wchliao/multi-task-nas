@@ -75,9 +75,9 @@ class CIFAR100Loader(BaseDataLoader):
             self.dataloader.append(dataloader)
 
 
-    def get_loader(self, task=None, prob=None):
+    def get_loader(self, task=None):
         if task is None:
-            return MultiTaskDataLoader(self.dataloader, prob)
+            return MultiTaskDataLoader(self.dataloader)
         else:
             assert task in list(range(20)), 'Unknown loader: {}'.format(task)
             return self.dataloader[task]

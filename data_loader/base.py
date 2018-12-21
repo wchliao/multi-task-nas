@@ -18,7 +18,7 @@ class BaseDataLoader:
     def __init__(self, batch_size=1, type='train', shuffle=True, drop_last=False):
         pass
 
-    def get_loader(self, task, prob):
+    def get_loader(self, task):
         raise NotImplementedError
 
     @property
@@ -35,17 +35,16 @@ class BaseDataLoader:
 
 
 class MultiTaskDataLoader:
-    def __init__(self, dataloaders, prob=None):
+    def __init__(self, dataloaders):
         self.dataloaders = dataloaders
         self.iters = [iter(loader) for loader in self.dataloaders]
 
-        if prob is None:
-            self.prob = np.ones(len(self.dataloaders)) / len(self.dataloaders)
-        else:
-            self.prob = prob
+        self.num_tasks = len(self.dataloaders)
+        self.task_order = list(range(self.num_tasks))
+        self.size = max([len(d) for d in self.dataloaders]) * self.num_tasks
 
-        self.size = sum([len(d) for d in self.dataloaders])
-        self.step = 0
+        self.task_step = 0
+        self.data_step = 0
 
 
     def __iter__(self):
@@ -53,11 +52,15 @@ class MultiTaskDataLoader:
 
 
     def __next__(self):
-        if self.step >= self.size:
-            self.step = 0
+        if self.data_step >= self.size:
+            self.data_step = 0
             raise StopIteration
 
-        task = np.random.choice(list(range(len(self.dataloaders))), p=self.prob)
+        if self.task_step >= self.num_tasks:
+            np.random.shuffle(self.task_order)
+            self.task_step = 0
+
+        task = self.task_order[self.task_step]
 
         try:
             data, labels = self.iters[task].__next__()
@@ -65,6 +68,7 @@ class MultiTaskDataLoader:
             self.iters[task] = iter(self.dataloaders[task])
             data, labels = self.iters[task].__next__()
 
-        self.step += 1
+        self.task_step += 1
+        self.data_step += 1
 
         return data, labels, task
