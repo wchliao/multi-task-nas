@@ -1,6 +1,6 @@
 import argparse
 import yaml
-from collections import namedtuple
+from namedtuple import TaskInfo, ControllerConfigs, ModelConfigs, Configs, Layer
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
 from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFull, MultiTaskController
@@ -42,7 +42,6 @@ def train(args):
         raise ValueError('Unknown data ID: {}'.format(args.data))
 
     num_tasks = len(train_data.num_classes)
-    TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
 
     if args.type == 1:
         assert args.task in list(range(num_tasks)), 'Unknown task: {}'.format(args.task)
@@ -125,7 +124,6 @@ def evaluate(args):
         raise ValueError('Unknown data ID: {}'.format(args.data))
 
     num_tasks = len(train_data.num_classes)
-    TaskInfo = namedtuple('TaskInfo', ['image_size', 'num_classes', 'num_channels', 'num_tasks'])
 
     if args.type == 1:
         assert args.task in list(range(num_tasks)), 'Unknown task: {}'.format(args.task)
@@ -199,12 +197,8 @@ def _load_configs():
     with open('configs/train.yaml', 'r') as f:
         configs = yaml.load(f)
 
-    ControllerConfigs = namedtuple('ControllerConfigs', configs['agent'].keys())
-    ModelConfigs = namedtuple('ModelConfigs', configs['model'].keys())
-    Configs = namedtuple('Configs', ['agent', 'model'])
-
-    agent_configs = ControllerConfigs(*configs['agent'].values())
-    model_configs = ModelConfigs(*configs['model'].values())
+    agent_configs = ControllerConfigs(**configs['agent'])
+    model_configs = ModelConfigs(**configs['model'])
 
     return Configs(agent=agent_configs, model=model_configs)
 
@@ -212,8 +206,8 @@ def _load_configs():
 def _load_architerture():
     with open('configs/architecture.yaml', 'r') as f:
         configs = yaml.load(f)
-    LayerArgument = namedtuple('LayerArgument', configs[0].keys())
-    return [LayerArgument(*config.values()) for config in configs]
+
+    return [Layer(**config) for config in configs]
 
 
 def main():
