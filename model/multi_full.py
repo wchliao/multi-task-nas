@@ -78,7 +78,7 @@ class MultiTaskModelFull(BaseModel):
             for t, model in enumerate(self.models):
                 model.eval()
 
-                for inputs, labels in data.get_loader(task=t):
+                for inputs, labels in data.get_loader(t):
                     inputs, labels = inputs.to(self.device), labels.to(self.device)
                     outputs = model(inputs)
                     _, predict_labels = torch.max(outputs.detach(), 1)

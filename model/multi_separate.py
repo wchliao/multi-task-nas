@@ -21,7 +21,7 @@ class MultiTaskModelSeparate(MultiTaskModelFull):
         for model in self.models:
             model.train()
 
-        dataloaders = [train_data.get_loader(task=t) for t in range(self.num_tasks)]
+        dataloaders = [train_data.get_loader(t) for t in range(self.num_tasks)]
         criterion = nn.CrossEntropyLoss()
         optimizers = [optim.SGD(model.parameters(), lr=learning_rate) for model in self.models]
         schedulers = [optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs) for optimizer in optimizers]
