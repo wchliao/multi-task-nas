@@ -2,3 +2,4 @@ from .single import SingleTaskController
 from .multi_separate import MultiTaskControllerSeparate
 from .multi_full_search_space import MultiTaskControllerFullSearchSpace
 from .multi_full import MultiTaskControllerFull
+from .multi_partial import MultiTaskControllerPartial
