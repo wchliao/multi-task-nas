@@ -32,7 +32,7 @@ def parse_args():
 
 def train(args):
     configs = _load_configs()
-    architecture = _load_architerture()
+    architecture = _load_architecture()
 
     if args.data == 1:
         train_data = CIFAR100Loader(batch_size=configs.model.batch_size, type='train', drop_last=True)
@@ -115,7 +115,7 @@ def train(args):
 
 def evaluate(args):
     configs = _load_configs()
-    architecture = _load_architerture()
+    architecture = _load_architecture()
 
     if args.data == 1:
         train_data = CIFAR100Loader(batch_size=configs.model.batch_size, type='train', drop_last=True)
@@ -203,7 +203,7 @@ def _load_configs():
     return Configs(agent=agent_configs, model=model_configs)
 
 
-def _load_architerture():
+def _load_architecture():
     with open('configs/architecture.yaml', 'r') as f:
         configs = yaml.load(f)
 
