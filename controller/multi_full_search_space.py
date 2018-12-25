@@ -11,7 +11,7 @@ class MultiTaskControllerFullSearchSpace(BaseController):
         search_space = search_space_separate + search_space_share
 
         super(MultiTaskControllerFullSearchSpace, self).__init__(build_model=MultiTaskModelFull,
-                                                      architecture=architecture,
-                                                      search_space=search_space,
-                                                      task_info=task_info
-                                                      )
+                                                                 architecture=architecture,
+                                                                 search_space=search_space,
+                                                                 task_info=task_info
+                                                                 )
