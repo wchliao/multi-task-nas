@@ -14,12 +14,13 @@ Configs = namedtuple('Configs', ['agent', 'model'])
 with open('configs/architecture.yaml', 'r') as f:
     _configs = yaml.load(f)
 
-Layer = namedtuple('Layer', _configs[0].keys())
+LayerArguments = namedtuple('LayerArguments', _configs[0].keys())
 
 with open('configs/search_space.yaml', 'r') as f:
     _configs = yaml.load(f)
 
-ShareLayer = namedtuple('ShareLayer', list(_configs[0].keys()) + ['share'])
+Layer = namedtuple('Layer', _configs[0].keys())
+ShareLayer = namedtuple('ShareLayer', ['layer', 'share'])
 
 
 # Others

@@ -1,6 +1,6 @@
 import argparse
 import yaml
-from namedtuple import TaskInfo, AgentConfigs, ModelConfigs, Configs, Layer
+from namedtuple import TaskInfo, AgentConfigs, ModelConfigs, Configs, LayerArguments
 from data_loader import CIFAR100Loader
 from random_search import SingleTaskRandomSearch, MultiTaskRandomSearchSeparate, MultiTaskRandomSearchFull
 from controller import SingleTaskController, MultiTaskControllerSeparate, MultiTaskControllerFullSearchSpace, MultiTaskControllerFull
@@ -207,7 +207,7 @@ def _load_architecture():
     with open('configs/architecture.yaml', 'r') as f:
         configs = yaml.load(f)
 
-    return [Layer(**config) for config in configs]
+    return [LayerArguments(**config) for config in configs]
 
 
 def main():

@@ -6,15 +6,19 @@ import os
 import json
 import pickle
 from model import MultiTaskModelFull
-from search_space import search_space_separate, search_space_shared
+from namedtuple import ShareLayer
+from search_space import search_space
 
 
 class MultiTaskControllerFull:
     def __init__(self, architecture, task_info):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+        search_space_separate = [ShareLayer(layer=layer, share=[0 for _ in range(task_info.num_tasks)]) for layer in search_space]
+        search_space_share = [ShareLayer(layer=layer, share=[1 for _ in range(task_info.num_tasks)]) for layer in search_space]
+        self.search_space = [search_space_separate, search_space_share]
+
         self.architecture = architecture
-        self.search_space = [search_space_separate, search_space_shared]
         self.task_info = task_info
 
         self.num_layers = len(architecture)
