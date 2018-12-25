@@ -8,9 +8,9 @@ from .base import BaseModel
 from .core import MultiTaskCoreModel
 
 
-class MultiTaskModelFull(BaseModel):
+class MultiTaskModel(BaseModel):
     def __init__(self, layers, architecture, task_info):
-        super(MultiTaskModelFull, self).__init__(layers, architecture, task_info)
+        super(MultiTaskModel, self).__init__(layers, architecture, task_info)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.num_tasks = task_info.num_tasks
         self.models = [nn.DataParallel(model).to(self.device) for model in MultiTaskCoreModel(layers=layers, architecture=architecture, task_info=task_info)]

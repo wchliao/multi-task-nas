@@ -5,7 +5,7 @@ import torch.optim as optim
 import os
 import json
 import pickle
-from model import MultiTaskModelFull
+from model import MultiTaskModel
 from namedtuple import ShareLayer
 from search_space import search_space
 
@@ -62,7 +62,7 @@ class MultiTaskControllerFull:
                 test_acc = self.architecture_acc_test[idx]
 
             else:
-                model = MultiTaskModelFull(layers, self.architecture, self.task_info)
+                model = MultiTaskModel(layers, self.architecture, self.task_info)
                 accuracy = model.train(train_data=train_data,
                                        valid_data=valid_data,
                                        num_epochs=configs.model.num_epochs,
@@ -107,7 +107,7 @@ class MultiTaskControllerFull:
             share = actions[1::2]
             layers = [self.search_space[s][l] for l, s in zip(layer_IDs, share)]
 
-        model = MultiTaskModelFull(layers, self.architecture, self.task_info)
+        model = MultiTaskModel(layers, self.architecture, self.task_info)
         accuracy = model.train(train_data=train_data,
                                valid_data=test_data,
                                num_epochs=configs.model.num_epochs,
