@@ -21,10 +21,10 @@ def parse_args():
                                                             '5: Multi-task experiment with controller to decide whether to \"share among some tasks\"')
     parser.add_argument('--data', type=int, default=1, help='1: CIFAR-100')
     parser.add_argument('--task', type=int, default=None)
-    parser.add_argument('--load', action='store_true')
 
+    parser.add_argument('--save', action='store_true')
+    parser.add_argument('--load', action='store_true')
     parser.add_argument('--path', type=str, default='saved_models/default/')
-    parser.add_argument('--save_model', action='store_true')
 
     parser.add_argument('--verbose', action='store_true')
 
@@ -120,7 +120,7 @@ def train(args):
                 valid_data=valid_data,
                 test_data=test_data,
                 configs=configs,
-                save_model=args.save_model,
+                save_model=args.save,
                 path=args.path,
                 verbose=args.verbose
                 )
