@@ -58,66 +58,44 @@ def train(args):
         valid_data = valid_data.get_loader(args.task)
         test_data = test_data.get_loader(args.task)
 
+    else:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+    if args.type == 1:
         if args.controller:
             agent = SingleTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
 
     elif args.type == 2:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerSeparate(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
 
     elif args.type == 3:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerShare(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchShare(architecture=architecture, task_info=task_info)
 
     elif args.type == 4:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerFullSearchSpace(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
     elif args.type == 5:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
     elif args.type == 6:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerPartial(architecture=architecture, task_info=task_info)
         else:
@@ -163,66 +141,44 @@ def evaluate(args):
         train_data = train_data.get_loader(args.task)
         test_data = test_data.get_loader(args.task)
 
+    else:
+        task_info = TaskInfo(image_size=train_data.image_size,
+                             num_classes=train_data.num_classes,
+                             num_channels=train_data.num_channels,
+                             num_tasks=num_tasks
+                             )
+
+    if args.type == 1:
         if args.controller:
             agent = SingleTaskController(architecture=architecture, task_info=task_info)
         else:
             agent = SingleTaskRandomSearch(architecture=architecture, task_info=task_info)
 
     elif args.type == 2:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerSeparate(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchSeparate(architecture=architecture, task_info=task_info)
 
     elif args.type == 3:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerShare(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchShare(architecture=architecture, task_info=task_info)
 
     elif args.type == 4:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerFullSearchSpace(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
     elif args.type == 5:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerFull(architecture=architecture, task_info=task_info)
         else:
             agent = MultiTaskRandomSearchFull(architecture=architecture, task_info=task_info)
 
     elif args.type == 6:
-        task_info = TaskInfo(image_size=train_data.image_size,
-                             num_classes=train_data.num_classes,
-                             num_channels=train_data.num_channels,
-                             num_tasks=num_tasks
-                             )
-
         if args.controller:
             agent = MultiTaskControllerPartial(architecture=architecture, task_info=task_info)
         else:
