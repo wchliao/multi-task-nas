@@ -224,4 +224,8 @@ def _build_layers(layers, architecture, num_channels, num_tasks):
 
         in_channels = out_channels
 
+    # Remove the last ReLU
+
+    models = [model[:-1] for model in models]
+
     return models
